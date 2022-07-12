@@ -6,7 +6,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 
 
-target 'verifytoken' do
+target 'myticketstore' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -23,7 +23,7 @@ target 'verifytoken' do
    permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
-  target 'verifytokenTests' do
+  target 'myticketstoreTests' do
     inherit! :complete
     # Pods for testing
   end
