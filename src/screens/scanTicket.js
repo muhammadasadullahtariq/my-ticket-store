@@ -39,11 +39,15 @@ const Screen = () => {
       setBannerText(data.text);
       setBannerColor(data.color);
     } else if (data.status === 2 && data.text === 'Ticket nicht vorhanden') {
-      showToast('Ticket is not valid');
-      setShowBanner(false);
+      //showToast('Ticket is not valid');
+      setShowBanner(true);
+      setBannerText(data.text);
+      setBannerColor(data.color);
     } else if (data.status === 2) {
-      showToast('Ticket is already used');
-      setShowBanner(false);
+      //showToast('Ticket is already used');
+      setShowBanner(true);
+      setBannerText(data.text);
+      setBannerColor(data.color);
     } else if (data.status === 'error') {
       showToast('Some error occure please try again');
       setShowBanner(false);
