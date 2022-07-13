@@ -6,6 +6,7 @@ async function checkTicket(ticketId) {
     };
     console.log('global.eventId: ', global.eventId);
     console.log('global.eventTicket: ', global.eventTicket);
+    console.log('ticketId: ', ticketId);
     const result = await fetch(
       `https://my-ticket.store/api/${global.eventId}/${global.eventTicket}/${ticketId}`,
       requestOptions,

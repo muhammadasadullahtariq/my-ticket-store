@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
 import checkTicket from '../api/checkTicket';
@@ -17,6 +24,9 @@ const Screen = () => {
   const [waitingAlertFlag, setWaitingAlertFlag] = useState(false);
   const scanner = useRef();
   const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
+  const [bannerText, setBannerText] = useState('');
+  const [bannerColor, setBannerColor] = useState('');
 
   const onSuccess = async result => {
     setWaitingAlertFlag(true);
@@ -24,13 +34,19 @@ const Screen = () => {
     const data = await checkTicket(result.data);
     setWaitingAlertFlag(false);
     if (data.status === 1) {
-      navigation.navigate('TicketResult', {color: data.color, text: data.text});
+      //navigation.navigate('TicketResult', {color: data.color, text: data.text});
+      setShowBanner(true);
+      setBannerText(data.text);
+      setBannerColor(data.color);
     } else if (data.status === 2 && data.text === 'Ticket nicht vorhanden') {
       showToast('Ticket is not valid');
+      setShowBanner(false);
     } else if (data.status === 2) {
       showToast('Ticket is already used');
+      setShowBanner(false);
     } else if (data.status === 'error') {
       showToast('Some error occure please try again');
+      setShowBanner(false);
     }
   };
 
@@ -95,13 +111,35 @@ const Screen = () => {
           </View>
         }
         bottomContent={
-          showDeleteButton ? (
-            <TouchableOpacity
-              onPress={backButtonPrss}
-              style={styles.buttonContainer}>
-              <Text style={styles.textContainer}>Delete Event</Text>
-            </TouchableOpacity>
-          ) : null
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              alignItems: 'center',
+              width: '100%',
+            }}
+            style={{
+              width: '100%',
+              paddingHorizontal: 10,
+              marginTop: Platform.OS != 'ios' ? 50 : 0,
+            }}>
+            {showBanner ? (
+              <View
+                style={[
+                  styles.bannerContainer,
+                  {backgroundColor: bannerColor},
+                ]}>
+                <Text style={styles.bannerText}>{bannerText}</Text>
+              </View>
+            ) : null}
+            {showDeleteButton ? (
+              <TouchableOpacity
+                onPress={backButtonPrss}
+                style={styles.buttonContainer}>
+                <Text style={styles.textContainer}>Delete Event</Text>
+              </TouchableOpacity>
+            ) : null}
+            <View style={{width: '100%', height: 20}} />
+          </ScrollView>
         }
       />
     </View>
@@ -144,10 +182,22 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 40,
   },
   textContainer: {
     color: '#fff',
+  },
+  bannerContainer: {
+    marginTop: 20,
+    width: '100%',
+    minHeight: 100,
+    backgroundColor: 'red',
+  },
+  bannerText: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    fontSize: 18,
+    fontWeight: '500',
   },
 });
 

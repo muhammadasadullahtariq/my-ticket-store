@@ -23,7 +23,7 @@ async function checkEvent(data) {
       global.eventTicket = dataSeperator[1];
     } else {
       global.eventId = dataSeperator[0];
-      global.eventTicketken = dataSeperator[1];
+      global.eventTicket = dataSeperator[1];
     }
     console.log(response);
     return response;
