@@ -55,8 +55,11 @@ const Screen = () => {
       setBannerText(data.text);
       setBannerColor(data.color);
     } else if (data.status === 3) {
-      showToast('Not valid QR code');
-      setShowBanner(false);
+      //showToast('Not valid QR code');
+      setShowBanner(true);
+      setBannerText(data.text);
+      setBannerColor(data.color);
+      //setShowBanner(false);
     } else if (data.status === 'erro') {
       showToast('Some error occure please try again');
       setShowBanner(false);
