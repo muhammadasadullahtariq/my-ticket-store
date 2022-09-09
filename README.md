@@ -15,3 +15,5 @@ pod install
 cd ..
 npm run ios
 npx react-native run-ios
+
+#brother if you see this please give review on order because i need it . 
